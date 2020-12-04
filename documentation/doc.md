@@ -188,7 +188,7 @@ Tip: if there are isolated nodes within the aggregated network view, it is advis
 
 The tool “Copy flattened network” from the menu Apps > TimeNexus enables to make a full or partial copy of a multi-layer network, by selecting a subset of layers.
 
-![image-20200623172942202](/home/pierrelee/Documents/temporal_network_project/doc/timenexus_copy_flattened_network.png)
+![image-20200623172942202](timenexus_copy_flattened_network.png)
 
 * **Select a multi-layer network:** select one multi-layer network collection.
 * **Select layers to copy:** select one or more layers to copy. The layers which are not selected will not be part of the new multi-layer network.
