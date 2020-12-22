@@ -1,0 +1,249 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         
+  <!-- Michaël Pierrelée - michael.pierrelee@univ-amu.fr -->
+  <!-- IBDM CNRS UMR7288 - Aix-Marseille University -->
+         
+  <!-- Version of the pom.xml format -->
+  <modelVersion>4.0.0</modelVersion>
+  
+  <!-- Properties -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- Bundle name-->
+    <bundle.symbolicName>TimeNexus</bundle.symbolicName>
+    <bundle.namespace>timenexus</bundle.namespace>
+    <!-- Versions -->
+    <cytoscape.api.version>3.8.0</cytoscape.api.version>
+    <osgi.api.version>4.2.0</osgi.api.version>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.release>11</maven.compiler.release>
+    <java.version>11</java.version>
+  </properties>
+
+  <!-- Project definition -->
+  <groupId>fr.univ-mrs.ibdm</groupId>
+  <artifactId>TimeNexus</artifactId>
+  <version>1.0.0</version>
+
+  <!-- Packaging -->
+  <packaging>bundle</packaging>
+
+  <!-- Build configuration -->
+  <build>
+    <!-- Name of the .jar file -->
+    <finalName>TimeNexus</finalName>
+  
+    <plugins>
+      <!-- Configuration of project build -->
+      <plugin>
+        <inherited>true</inherited>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <optimize>true</optimize>
+          <showWarnings>true</showWarnings>
+          <showDeprecation>true</showDeprecation>
+          <compilerArguments>
+            <Xmaxwarns>10000</Xmaxwarns>
+            <Xmaxerrs>10000</Xmaxerrs>
+          </compilerArguments>
+          <!-- Java version -->
+          <release>11</release>
+          
+        </configuration>
+      </plugin>
+              
+      <!-- Metadata for an OSGi bundle -->
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>4.2.1</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
+            <!--<Bundle-Version>${project.version}</Bundle-Version>
+            <Export-Package>!${bundle.namespace}.*</Export-Package>
+            <Private-Package>${bundle.namespace}.*</Private-Package>-->
+            <Bundle-Activator>${bundle.namespace}.CyActivator</Bundle-Activator>
+            
+            <Import-Package>!.,*;resolution:=optional</Import-Package>
+            <Embed-Dependency>json</Embed-Dependency>
+          </instructions>
+        </configuration>
+      </plugin>
+      
+      <!-- <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.3</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+             <configuration>
+              <minimizeJar>true</minimizeJar>
+             <artifactSet>
+                <includes>
+                  <include>com.sun.xml.messaging.saaj</include>
+                </includes>
+              </artifactSet>
+            </configuration> 
+          </execution>
+        </executions>
+      </plugin>-->
+      
+      <!-- Javadoc -->
+
+    </plugins>
+  </build>
+
+  <!--
+    These are repositories Maven uses to download Cytoscape API JARs we
+    use in our app.
+  -->
+  <repositories>
+    <repository>
+      <id>cytoscape_snapshots</id>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <name>Cytoscape Snapshots</name>
+      <url>https://nrnb-nexus.ucsd.edu/repository/cytoscape_snapshots/</url>
+    </repository>
+    <repository>
+      <id>cytoscape_releases</id>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <name>Cytoscape Releases</name>
+      <url>https://nrnb-nexus.ucsd.edu/repository/cytoscape_releases/</url>
+    </repository>
+  </repositories>
+
+  <!--
+    Our app depends on other OSGi bundle JARs. We list all the JARs
+    we depend on here. Just like our own Maven project, these
+    dependencies are uniquely identified by groupId, artifactId,
+    and version. Dependencies do not necessarily have to be
+    OSGi bundles. They can be regular JAR files, in which case they must
+    be inlined or embedded into this bundle.
+  -->
+  <dependencies>  
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20180813</version>
+    </dependency>
+    
+    <dependency>
+  <groupId>jakarta.xml.bind</groupId>
+  <artifactId>jakarta.xml.bind-api</artifactId>
+  <version>2.3.3</version>
+</dependency>
+
+
+    <!-- Cytoscape dependencies -->
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>application-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+      <type>bundle</type>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>model-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+      <type>bundle</type>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>service-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+      <type>bundle</type>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>viewmodel-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+      <type>bundle</type>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>vizmap-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>presentation-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>work-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>session-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+      <type>bundle</type>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>swing-application-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>core-task-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>layout-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.cytoscape</groupId>
+      <artifactId>app-api</artifactId>
+      <version>${cytoscape.api.version}</version>
+      <type>bundle</type>
+    </dependency>
+    <!-- OSGi core API -->
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi.core</artifactId>
+      <version>${osgi.api.version}</version>
+    </dependency>
+    
+    <!-- <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>1.3.2</version>
+    </dependency>
+    <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.4.0-b180725.0427</version>
+    </dependency>
+    <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-runtime</artifactId>
+        <version>2.4.0-b180725.0644</version>
+    </dependency>-->
+   
+  </dependencies>
+</project>
